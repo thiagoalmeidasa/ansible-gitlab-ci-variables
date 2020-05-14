@@ -7,8 +7,8 @@ The role can create or update variable value, and also track
 existing Gitlab CI variables that are not specified in the
 role configuration.
 
-[![Build Status](https://travis-ci.org/peay/ansible-gitlab-ci-variables.svg?branch=master)](https://travis-ci.org/peay/ansible-gitlab-ci-variables)
-[![Ansible Galaxy](https://img.shields.io/badge/ansible-peay.gitlab--ci--variables-blue.svg)](https://galaxy.ansible.com/peay/gitlab-ci-variables/)
+[![Build Status](https://travis-ci.org/thiagoalmeidasa/ansible-gitlab-ci-variables.svg?branch=master)](https://travis-ci.org/thiagoalmeidasa/ansible-gitlab-ci-variables)
+[![Ansible Galaxy](https://img.shields.io/badge/ansible-thiagoalmeidasa.gitlab--ci--variables-blue.svg)](https://galaxy.ansible.com/thiagoalmeidasa/gitlab-ci-variables/)
 
 Requirements
 ------------
@@ -19,7 +19,7 @@ Installation
 -------------
 
 ```sh
-ansible-galaxy install peay.gitlab-ci-variables
+ansible-galaxy install thiagoalmeidasa.gitlab-ci-variables
 ```
 
 Usage
@@ -47,22 +47,31 @@ gitlab_ci_variables:
     variables:
       - key: VARIABLE_1
         value: value
+        masked: false
+        protected: false
+        variable_type: env_var
 
   - name: "group/project2"
     kind: "project"
     variables:
       - key: VARIABLE_1
         value: value
+        masked: false
       - key: VARIABLE_2
         value: value
+        variable_type: env_var
 
   - name: "group"
     kind: "group"
     variables:
       - key: VARIABLE_3
         value: value
+        variable_type: env_var
       - key: VARIABLE_4
         value: value
+        masked: false
+        protected: false
+        variable_type: env_var
 ```
 
 By default, the role will also check for Gitlab CI variables that
