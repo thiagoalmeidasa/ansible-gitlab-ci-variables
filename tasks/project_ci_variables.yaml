@@ -26,4 +26,4 @@
     loop_var: gitlab_ci_variable
 
 - include: "unknown_ci_variables.yaml"
-  when: gitlab_ci_check_unknown
+  when: gitlab_ci_check_unknown|bool
