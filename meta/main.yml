@@ -1,5 +1,6 @@
 galaxy_info:
   author: thiagoalmeidasa
+  role_name: gitlab-ci-variables
   description: Manage Gitlab CI build variables
   license: MIT
   min_ansible_version: 1.2
