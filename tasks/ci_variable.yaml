@@ -9,7 +9,10 @@
 #
 #    key: VARIABLE
 #    value: xxxx
-#
+#    protected: false
+#    masked: false
+#    variable_type: env_var
+
 
 - name: "Get variable value: {{ gitlab_ci_variable.key }}"
   uri:
@@ -18,7 +21,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
     status_code: 200, 404
-    validate_certs: "no"
+    validate_certs: "{{ gitlab_ci_validate_certs }}"
   register: gitlab_ci_variable_request
 
 - name: "Create variable: {{ gitlab_ci_variable.key }}"
@@ -29,8 +32,14 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
     status_code: 201
-    body: "key={{ gitlab_ci_variable.key }}&value={{ gitlab_ci_variable.value | urlencode }}"
-    validate_certs: "no"
+    body_format: form-urlencoded
+    body:
+      key: "{{ gitlab_ci_variable.key }}"
+      value: "{{ gitlab_ci_variable.value | urlencode }}"
+      masked: "{{ gitlab_ci_variable.masked | default('false') }}"
+      protected: "{{ gitlab_ci_variable.protected | default('false') }}"
+      variable_type: "{{ gitlab_ci_variable.variable_type | default('env_var') }}"
+    validate_certs: "{{ gitlab_ci_validate_certs }}"
 
 - name: "Update variable: {{ gitlab_ci_variable.key }}"
   when: (gitlab_ci_variable_request.status == 200) and
@@ -41,6 +50,11 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
     status_code: 200
-    body: "value={{ gitlab_ci_variable.value | urlencode }}"
-    validate_certs: "no"
+    body_format: form-urlencoded
+    body:
+      value: "{{ gitlab_ci_variable.value | urlencode }}"
+      masked: "{{ gitlab_ci_variable.masked | default('false') }}"
+      protected: "{{ gitlab_ci_variable.protected | default('false') }}"
+      variable_type: "{{ gitlab_ci_variable.variable_type | default('env_var') }}"
+    validate_certs: "{{ gitlab_ci_validate_certs }}"
   changed_when: true

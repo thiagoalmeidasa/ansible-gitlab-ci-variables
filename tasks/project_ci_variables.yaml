@@ -9,6 +9,9 @@
 #    variables:
 #      - key: VARIABLE
 #        value: xxxx
+#        masked: false
+#        protected: false
+#        variable_type: env_var
 #        ...
 #
 
@@ -17,7 +20,6 @@
 
 - set_fact:
     project_gitlab_ci: "{{ project_gitlab_ci_variables.name | replace('/', '%2F') }}"
-
 - include: "ci_variable.yaml"
   with_items: "{{ project_gitlab_ci_variables.variables }}"
   loop_control:

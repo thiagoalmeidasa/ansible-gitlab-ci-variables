@@ -1,6 +1,5 @@
 ---
-
-# If require, remove variables that are not tracked from ansible
+# Check for remove variables that are not tracked from ansible
 - name: "List variables"
   uri:
     url: "{{ gitlab_api_url }}/{{ kind_gitlab_ci }}s/{{ project_gitlab_ci }}/variables"
@@ -8,7 +7,7 @@
     headers:
       PRIVATE-TOKEN: "{{ gitlab_token }}"
     status_code: 200
-    validate_certs: "no"
+    validate_certs: "{{ gitlab_ci_validate_certs }}"
   register: gitlab_ci_variable_list_request
 
 - set_fact:
@@ -19,4 +18,4 @@
   fail:
     msg: "Unknown variable {{ item }}"
   when: gitlab_ci_check_unknown and item not in gitlab_ci_variables_keys
-  with_items: "{{ gitlab_ci_variable_list_request.json | map(attribute='key') | list }}"
+  loop: "{{ gitlab_ci_variable_list_request.json | map(attribute='key') | list }}"
