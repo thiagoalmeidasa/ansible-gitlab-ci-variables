@@ -18,6 +18,7 @@ gitlab_ci_variables:
           line
           line
         protected: true
+        variable_type: file
   # - name: "my-group-name"
   #   kind: "group"
   #   variables:
